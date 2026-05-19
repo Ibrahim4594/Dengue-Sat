@@ -40,9 +40,13 @@ fusing six geospatial and clinical signals into bilingual public-health action.
 14. [Configuration](#14-configuration)
 15. [Performance Budgets](#15-performance-budgets)
 16. [Security & Privacy](#16-security--privacy)
-17. [Roadmap](#17-roadmap)
-18. [Acknowledgements](#18-acknowledgements)
-19. [License](#19-license)
+17. [Assumptions](#17-assumptions)
+18. [Baseline Comparison](#18-baseline-comparison)
+19. [Scalability](#19-scalability)
+20. [Limitations](#20-limitations)
+21. [Roadmap](#21-roadmap)
+22. [Acknowledgements](#22-acknowledgements)
+23. [License](#23-license)
 
 ---
 
@@ -618,7 +622,91 @@ runs entirely on a local emulator + local proxy; no external traffic ingress is 
 
 ---
 
-## 17. Roadmap
+## 17. Assumptions
+
+The following assumptions are made for the hackathon submission:
+
+| Assumption | Rationale |
+|---|---|
+| **Single district scope per run** | The orchestrator ingests one district triple (province → city → district) per run. Multi-district runs are architecturally supported but not stress-tested within the demo window. |
+| **Firebase RTDB data is seeded** | Hospital admissions, bed counts, and platelet inventory are seeded for Karachi, Lahore, Islamabad, and Rawalpindi districts. Other districts show 0 admissions — treated as data-absent, not zero-risk. |
+| **Social signals are synthetic** | Real Urdu/English social media cannot be ingested without X/Meta API keys. The `CitizenSignal` agent uses Haiku 4.5-generated synthetic posts. Credibility is scored at 42/100 to reflect this. |
+| **Google Trends is a proxy only** | Google Trends data reflects *public search interest*, not case counts. Used as a leading indicator corroborating hospital signals, never as a standalone crisis trigger. |
+| **No multi-crisis demo** | The demo runs one district at a time. The multi-crisis architecture (parallel OutbreakEye crises array, multi-target ResourceForge allocation) is implemented but not exercised in the live demo due to pipeline latency (60–150s). |
+| **`PROVIDER_GOOGLE` maps** | All map functionality (heatmap, custom style, circle overlay) requires the Google Maps provider. Apple Maps is not supported. |
+| **Network-dependent latency** | Pipeline duration depends on Anthropic API availability and the rate-limit window (30k input tokens/min on the organization tier used). Severe rate-limit exhaustion will trigger exponential backoff, extending total run time beyond 150 seconds. |
+
+---
+
+## 18. Baseline Comparison
+
+DengueSat CIRO is compared against the **Punjab Information Technology Board (PITB) Dengue Surveillance System**, Pakistan's existing provincial dengue tracking platform.
+
+| Dimension | PITB Dengue System | DengueSat CIRO |
+|---|---|---|
+| **Data sources** | Field worker paper reports, hospital weekly submissions | NASA POWER, OpenWeather, Firebase RTDB (live), Google Trends, social signals — 6 fused |
+| **Latency (signal → alert)** | 3–7 days (field → entry → rollup) | ~60–150 seconds |
+| **Language** | Urdu-partial (admin interface only) | Bilingual — English + Urdu at every output layer, generated natively |
+| **Geographic granularity** | District-level aggregate | Sub-district point coordinates with radius estimation |
+| **AI reasoning** | None — rule-based threshold triggers | 8 reasoning agents with extended thinking + confidence scores + source credibility ledger |
+| **False positive handling** | Manual supervisor review after 48–72h | RecoveryGuard agent runs within same pipeline, can RETRACT within same run |
+| **Stakeholder broadcast** | None automated | 5 tailored messages (citizens, emergency, hospital, government, media) with Urdu translations |
+| **Resource allocation** | Static protocol lookup tables | ResourceForge agent: constraint-aware dynamic allocation with tradeoff narration |
+| **Observability** | No trace visibility | Full Antigravity trace stream — every reasoning step, confidence, latency, cost auditable |
+| **Mobile interface** | Web dashboard, desktop-only | Android-first, offline-capable architecture |
+
+PITB is strong on ground truth (field workers) but weak on speed, AI reasoning, and stakeholder communication. DengueSat CIRO targets the latency-and-coordination gap, not the ground-truth gap.
+
+---
+
+## 19. Scalability
+
+### Horizontal scaling
+
+The Edge function architecture is stateless by design. Each `/api/agent/tool/[name]` invocation is independent — any number can run in parallel without shared state. The master orchestrator at `/api/agent/orchestrate` is also stateless, holding all conversation state in-memory for the duration of a single SSE stream.
+
+Scaling bottleneck: Anthropic API rate limits (input tokens/minute per org). At the current tier (~30k input TPM), a full 8-agent run consumes ~15–25k tokens. Burst scaling to multiple simultaneous users would require a pro/team tier or a dedicated API capacity agreement.
+
+### Geographic scaling
+
+The district picker currently covers 4 provinces × ~5 cities × ~6 districts. Extending to all 130+ districts of Pakistan requires:
+- Adding coordinates + population to `constants/provinces.ts` (data work only, no architecture change)
+- Firebase RTDB seeding for all districts (hospital data partnership)
+- Google Trends keyword tuning per city
+
+### Multi-crisis scaling
+
+The agent schema supports `crises[]` arrays throughout. Running two simultaneous district analyses requires two parallel pipeline invocations. The mobile app's Zustand store supports arrays of `activeCrises` already; UI rendering is designed for N crises.
+
+### Cost scaling
+
+| Scale | Est. cost/run | Monthly (100 runs/day) |
+|---|---|---|
+| Single district | $0.08–$0.18 | $240–$540 |
+| 10 districts parallel | $0.80–$1.80 | $2,400–$5,400 |
+| National (130 districts) | $10–$23 | $30k–$70k |
+
+At national scale, prompt caching (already implemented on system blocks) saves ~90% on repeated sub-agent calls for the same district. Multi-turn caching within a single run saves ~60%.
+
+---
+
+## 20. Limitations
+
+| Limitation | Impact | Mitigation planned |
+|---|---|---|
+| **No real social media ingestion** | Social credibility capped at 42/100; community-level signal is synthetic | X/Meta API partnership or civic-report accumulation via CitizenSignal |
+| **Single-run, no persistence** | Results reset on app reload; no historical trend analysis | Firebase Firestore for run history |
+| **No lab/PCR confirmation integration** | DRI score relies on admissions + climate proxies, not confirmed case counts | NHSRC / PITB confirmed case API integration |
+| **Urdu font rendering (Nastaliq)** | System defaults to Noto Sans Arabic (Naskh) — grammatically correct but less visually authentic | `Noto Nastaliq Urdu` font load in Phase 2 |
+| **No offline mode** | SSE stream requires active internet; no fallback to cached last-known state | Service worker + last-known result caching |
+| **No biometric/auth** | API endpoints are unauthenticated (local-only) | Clerk + `X-Api-Key` header in production |
+| **Windows libuv instability** | `vercel dev` crashes ~every 20min on Windows; supervisor restarts but causes SSE interruptions | Wrangler-based or Bun-based alternative on Windows in Phase 2 |
+| **DRI formula weights are heuristic** | T-R-V-H-W weights are calibrated from dengue epidemiology literature, not from Pakistan-specific validation | Regression calibration against historical PITB data |
+| **Pipeline latency 60–150s** | Too slow for true real-time; demo requires patience | Switch to streaming tool_use (when Anthropic supports mid-stream tool dispatch), reduce sub-agent count |
+
+---
+
+## 21. Roadmap
 
 **Phase 1 — submitted (this repo)**
 - ✅ 8-agent pipeline, bilingual master output
@@ -645,7 +733,7 @@ runs entirely on a local emulator + local proxy; no external traffic ingress is 
 
 ---
 
-## 18. Acknowledgements
+## 22. Acknowledgements
 
 | | |
 |---|---|
@@ -667,7 +755,7 @@ trademarks belong to their respective owners.
 
 ---
 
-## 19. License
+## 23. License
 
 MIT. See [LICENSE](./LICENSE).
 
