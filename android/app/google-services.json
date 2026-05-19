@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "374021231551",
+    "firebase_url": "https://denguesa-e0371-default-rtdb.firebaseio.com",
+    "project_id": "denguesa-e0371",
+    "storage_bucket": "denguesa-e0371.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:374021231551:android:06ca53e3da0c92b708070a",
+        "android_client_info": {
+          "package_name": "com.anonymous.denguesatciro"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD-7zw7o7wLIfmsyCVX4PDyUwFUSGiOGjM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

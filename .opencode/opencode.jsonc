@@ -1,0 +1,160 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "model": "deepseek/deepseek-v4-pro",
+  "plugin": ["ecc-universal"],
+
+  // ── ECC Skills (from everything-claude-code) ──
+  "skills": {
+    "paths": [
+      "..\\everything-claude-code\\skills"
+    ]
+  },
+  "instructions": [
+    "..\\everything-claude-code\\AGENTS.md",
+    "..\\everything-claude-code\\skills\\coding-standards\\SKILL.md",
+    "..\\everything-claude-code\\skills\\frontend-patterns\\SKILL.md",
+    "..\\everything-claude-code\\skills\\backend-patterns\\SKILL.md",
+    "..\\everything-claude-code\\skills\\tdd-workflow\\SKILL.md",
+    "..\\everything-claude-code\\skills\\security-review\\SKILL.md",
+    "..\\everything-claude-code\\skills\\api-design\\SKILL.md",
+    "..\\everything-claude-code\\skills\\react-native-patterns\\SKILL.md",
+    "..\\everything-claude-code\\skills\\typescript-coding-standards\\SKILL.md",
+    "..\\everything-claude-code\\skills\\mobile-ui-patterns\\SKILL.md"
+  ],
+
+  // ── ECC Agents ──
+  "agent": {
+    "build": {
+      "description": "Primary coding agent for React Native development",
+      "mode": "primary",
+      "model": "deepseek/deepseek-v4-pro",
+      "tools": {
+        "write": true,
+        "edit": true,
+        "bash": true,
+        "read": true
+      }
+    },
+    "planner": {
+      "description": "Expert planning specialist for complex features and refactoring",
+      "mode": "subagent",
+      "model": "deepseek/deepseek-v4-pro",
+      "tools": {
+        "read": true,
+        "bash": true,
+        "write": false,
+        "edit": false
+      }
+    },
+    "architect": {
+      "description": "Software architecture specialist for system design, scalability, and technical decisions",
+      "mode": "subagent",
+      "model": "deepseek/deepseek-v4-pro",
+      "tools": {
+        "read": true,
+        "bash": true,
+        "write": false,
+        "edit": false
+      }
+    },
+    "code-reviewer": {
+      "description": "Expert code review specialist. Reviews code for quality, security, and maintainability",
+      "mode": "subagent",
+      "model": "deepseek/deepseek-v4-pro",
+      "tools": {
+        "read": true,
+        "bash": true,
+        "write": false,
+        "edit": false
+      }
+    },
+    "tdd-guide": {
+      "description": "Test-Driven Development specialist enforcing write-tests-first methodology",
+      "mode": "subagent",
+      "model": "deepseek/deepseek-v4-pro",
+      "tools": {
+        "read": true,
+        "write": true,
+        "edit": true,
+        "bash": true
+      }
+    },
+    "security-reviewer": {
+      "description": "Security vulnerability detection and remediation specialist",
+      "mode": "subagent",
+      "model": "deepseek/deepseek-v4-pro",
+      "tools": {
+        "read": true,
+        "bash": true,
+        "write": true,
+        "edit": true
+      }
+    },
+    "doc-updater": {
+      "description": "Documentation and README specialist",
+      "mode": "subagent",
+      "model": "deepseek/deepseek-v4-pro",
+      "tools": {
+        "read": true,
+        "write": true,
+        "edit": true,
+        "bash": true
+      }
+    },
+    "typescript-reviewer": {
+      "description": "TypeScript/React Native code review specialist",
+      "mode": "subagent",
+      "model": "deepseek/deepseek-v4-pro",
+      "tools": {
+        "read": true,
+        "bash": true,
+        "write": false,
+        "edit": false
+      }
+    }
+  },
+
+  // ── ECC Commands ──
+  "command": {
+    "plan": {
+      "description": "Create implementation plan for complex features",
+      "agent": "planner",
+      "subtask": true
+    },
+    "code-review": {
+      "description": "Review code for quality, security, maintainability",
+      "agent": "code-reviewer",
+      "subtask": true
+    },
+    "security": {
+      "description": "Run comprehensive security review",
+      "agent": "security-reviewer",
+      "subtask": true
+    },
+    "tdd": {
+      "description": "TDD workflow with 80%+ coverage",
+      "agent": "tdd-guide",
+      "subtask": true
+    }
+  },
+
+  // ── MCP Servers ──
+  "mcpServers": {
+    "memory": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-memory"]
+    },
+    "context7": {
+      "command": "npx",
+      "args": ["-y", "@upstash/context7-mcp@latest"]
+    },
+    "sequential-thinking": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-sequential-thinking"]
+    }
+  },
+
+  "permission": {
+    "mcp_*": "ask"
+  }
+}

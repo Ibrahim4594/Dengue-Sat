@@ -1,0 +1,169 @@
+================================================================================
+              HOW WE USED ANTIGRAVITY — DEMO SCRIPT (SIMPLE ENGLISH)
+                       DengueSat CIRO · AI-Seekho 2026
+                              Target: 2–3 minutes
+================================================================================
+
+Read this out loud at conversational speed. Pause where marked.
+Audience already knows what Antigravity is.
+
+================================================================================
+  OPEN  (15 seconds)
+================================================================================
+
+Hi. I want to show you how my team and I used Antigravity to build
+DengueSat CIRO.
+
+Antigravity is the IDE we worked in for every line of this project.
+But the real story is HOW we talked to it — what we asked, in what order,
+with what rules. That is what made the app work.
+
+
+================================================================================
+  STEP 1 — WE STARTED WITH PLAN MODE, NOT AGENT MODE  (30 seconds)
+================================================================================
+
+The first thing we decided: we would NOT jump straight into agent mode.
+
+Agent mode writes code immediately. That sounds fast. But for a project
+this big — eight AI agents, six data sources, a custom map, a live
+trace system — it would have gone in the wrong direction within minutes.
+
+So instead we used PLAN MODE first.
+
+In plan mode, Antigravity does not touch any files. It writes out a
+plan. What to build. What to delete. What the data flow looks like.
+What can go wrong.
+
+We read the plan. We corrected it. Only after the plan was right did
+we let Antigravity start writing code.
+
+Plan first. Code second. Every feature. No exceptions.
+
+
+================================================================================
+  STEP 2 — WE GAVE THE AGENT A ROLE  (20 seconds)
+================================================================================
+
+The next thing was ROLE PROMPTING.
+
+Instead of saying "build me an app," we said:
+
+  "Act as my lead architect for the AI-Seekho hackathon.
+   Compare Flutter and React Native for our mobile app.
+   Then decide which one we should use."
+
+The role — lead architect — made Antigravity behave like a senior engineer
+weighing real tradeoffs. Not like a code generator guessing.
+
+We did this for every feature. SignalFuse got the role of "satellite signal
+analyst." OutbreakEye got "epidemiologist." SeverityMind got "public health
+risk analyst." Each agent has a clear identity.
+
+
+================================================================================
+  STEP 3 — WE USED CHAIN-OF-THOUGHT  (25 seconds)
+================================================================================
+
+Then we used CHAIN-OF-THOUGHT prompting.
+
+Chain-of-Thought means: do not jump to the answer. Walk through the
+reasoning step by step. Show your work.
+
+For example, when SeverityMind scores a crisis from 0 to 100, we told it:
+
+  "First, list the five environmental factors.
+   Then, normalize each one.
+   Then, apply the weights.
+   Then, sum them.
+   Then, output the final score."
+
+This way, the score is never a guess. It is an audited number with a
+visible trail behind it. Every step lands in our trace stream so a
+public-health official can verify it.
+
+
+================================================================================
+  STEP 4 — WE USED TREE-OF-THOUGHTS FOR HARD CALLS  (25 seconds)
+================================================================================
+
+Some decisions are too hard for a single line of reasoning.
+
+For those, we used TREE-OF-THOUGHTS.
+
+Tree-of-Thoughts means: the agent considers several different answers
+in parallel, then picks the best one.
+
+For example, when ResourceForge plans where to send ambulances and
+fumigation trucks, it does not commit to the first idea. It builds three
+allocation strategies — one that prioritizes the worst hotspot, one that
+spreads resources evenly, one that holds reserves for tomorrow — then
+compares the tradeoffs and outputs the strongest plan.
+
+That branching exploration is what makes the resource allocation
+defensible, not just confident.
+
+
+================================================================================
+  STEP 5 — WE PUT GUARDRAILS EVERYWHERE  (25 seconds)
+================================================================================
+
+The last big technique was GUARDRAILS.
+
+A guardrail is a rule the agent is not allowed to break.
+
+Examples from our system prompts:
+
+  - "Your final output MUST be a JSON object inside a json code fence."
+  - "summaryUr must be written in authentic Urdu script.
+     Roman Urdu is forbidden. English code-mixing is forbidden."
+  - "severity must be exactly one of: LOW, MODERATE, HIGH, CRITICAL."
+  - "If the input data is incomplete, escalate. Do not invent."
+
+These rules are enforced at the schema layer with Zod validation. If
+Antigravity ever breaks them, our system catches it, flags it as a
+schema soft-fail, and recovers gracefully — instead of silently shipping
+bad data to a citizen's phone.
+
+Guardrails are what take this from a demo into something a health
+department could actually trust.
+
+
+================================================================================
+  CLOSE  (15 seconds)
+================================================================================
+
+So to recap, the four techniques we leaned on:
+
+  1. PLAN MODE first — never agent mode first.
+  2. ROLE PROMPTING — every agent has a clear identity.
+  3. CHAIN-OF-THOUGHT — every answer shows its reasoning.
+  4. TREE-OF-THOUGHTS — hard decisions explore branches.
+  5. GUARDRAILS — strict rules, schema-validated, soft-fail recoverable.
+
+Antigravity gave us the workspace. Prompt engineering gave us the
+discipline. Together, that is how DengueSat CIRO got built.
+
+Thank you.
+
+
+================================================================================
+  ONE-SLIDE CHEAT SHEET  (for the closing frame of the video)
+================================================================================
+
+       ┌──────────────────────────────────────────────────────────┐
+       │             HOW WE BUILT DENGUESAT CIRO                  │
+       │                                                          │
+       │   PLAN MODE          →   plan first, code second         │
+       │   ROLE PROMPTING     →   every agent has an identity     │
+       │   CHAIN-OF-THOUGHT   →   reasoning before answer         │
+       │   TREE-OF-THOUGHTS   →   explore branches on hard calls  │
+       │   GUARDRAILS         →   strict rules, schema enforced   │
+       │                                                          │
+       │              Built in Antigravity. Shipped in 5 days.    │
+       └──────────────────────────────────────────────────────────┘
+
+
+================================================================================
+                                END OF SCRIPT
+================================================================================

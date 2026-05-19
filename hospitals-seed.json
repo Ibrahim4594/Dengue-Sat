@@ -1,0 +1,70 @@
+{
+  "karachi": {
+    "jinnah": {
+      "name": "Jinnah Hospital",
+      "nameUrdu": "جناح ہسپتال",
+      "lat": 24.8924,
+      "lng": 67.0731,
+      "totalBeds": 1200,
+      "occupiedBeds": 1068,
+      "platelets": 320,
+      "dengueAdmissions24h": 47
+    },
+    "civil": {
+      "name": "Civil Hospital",
+      "nameUrdu": "سول ہسپتال",
+      "lat": 24.8607,
+      "lng": 67.0011,
+      "totalBeds": 900,
+      "occupiedBeds": 801,
+      "platelets": 240,
+      "dengueAdmissions24h": 35
+    },
+    "lyari": {
+      "name": "Lyari General Hospital",
+      "nameUrdu": "لیاری جنرل ہسپتال",
+      "lat": 24.8908,
+      "lng": 66.9912,
+      "totalBeds": 600,
+      "occupiedBeds": 522,
+      "platelets": 140,
+      "dengueAdmissions24h": 18
+    }
+  },
+  "lahore": {
+    "mayo": {
+      "name": "Mayo Hospital",
+      "nameUrdu": "میو ہسپتال",
+      "lat": 31.5832,
+      "lng": 74.3245,
+      "totalBeds": 1500,
+      "occupiedBeds": 1290,
+      "platelets": 410,
+      "dengueAdmissions24h": 28
+    }
+  },
+  "peshawar": {
+    "lady-reading": {
+      "name": "Lady Reading Hospital",
+      "nameUrdu": "لیڈی ریڈنگ ہسپتال",
+      "lat": 34.0151,
+      "lng": 71.5466,
+      "totalBeds": 1100,
+      "occupiedBeds": 880,
+      "platelets": 280,
+      "dengueAdmissions24h": 18
+    }
+  },
+  "islamabad": {
+    "pims": {
+      "name": "PIMS",
+      "nameUrdu": "پاکستان انسٹیٹیوٹ آف میڈیکل سائنسز",
+      "lat": 33.6957,
+      "lng": 73.0539,
+      "totalBeds": 900,
+      "occupiedBeds": 720,
+      "platelets": 200,
+      "dengueAdmissions24h": 12
+    }
+  }
+}

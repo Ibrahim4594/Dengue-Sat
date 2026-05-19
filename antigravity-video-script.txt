@@ -1,0 +1,206 @@
+================================================================================
+                  ANTIGRAVITY USAGE — SCREEN RECORDING SCRIPT
+                       DengueSat CIRO · AI-Seekho 2026
+                              Target: 2–3 minutes
+================================================================================
+
+Voice: calm, paced, technical-confident. Speak each [TIMER MARK] beat aloud
+while recording. Show the indicated screen at each beat. End-to-end recording
+should be under 3 minutes.
+
+================================================================================
+  SETUP BEFORE YOU HIT RECORD
+================================================================================
+
+  1. Open Google Antigravity (https://antigravity.google.com) in a clean
+     browser window. Sign in. Open the DengueSat CIRO workspace.
+  2. Make sure the right-side Activity panel is visible.
+  3. Have these tabs prepared in advance:
+       • Plan-mode chat with one historical plan visible
+       • Agent run history showing parallel sub-agents
+       • A file open in the editor (suggested: lib/antigravity.ts)
+       • Browser preview pane showing the running app (denguesat-ciro)
+  4. Open OBS / Loom / QuickTime. Set output to 1080p, 30 fps.
+  5. Mute notifications. Close Slack / email / Discord.
+
+
+================================================================================
+  [00:00 — 00:20]   OPEN — WHAT ANTIGRAVITY IS, FOR US
+================================================================================
+
+[Screen: Antigravity workspace home, DengueSat CIRO repo open]
+
+"This is Google Antigravity, an agentic IDE where a developer doesn't write
+every line themselves — they direct multiple AI sub-agents in parallel,
+review plans before code is written, and watch the build happen step by step.
+
+For DengueSat CIRO — our Crisis Intelligence and Response Orchestrator for
+Pakistan — Antigravity was not a convenience. It was the development substrate.
+A 26,000-line, eight-agent system, fully bilingual, with a custom Skia gauge,
+a live Google Maps dashboard, sixteen recolored illustrations, and four
+external APIs — built and refined entirely inside this workspace."
+
+
+================================================================================
+  [00:20 — 00:45]   PLAN-MODE — HOW WE STARTED EVERY FEATURE
+================================================================================
+
+[Screen: Plan-mode chat panel, open one saved plan e.g. "real-only minimal UI"]
+
+"Every major feature in this codebase started here, in plan mode.
+
+I described what I wanted in plain English — for example, 'remove every
+fallback and mock data, keep home screen minimal, show bilingual cards
+after analysis, map updates with real data.' Antigravity produced a written
+plan first. Files to delete. Files to modify. Files to create. Data flow.
+Visual system tokens. Error handling.
+
+I reviewed the plan. Approved it. Only then did any code change."
+
+[Action: scroll the plan visibly. Highlight the "Removed / Modified / Created"
+sections at the top of the spec.]
+
+
+================================================================================
+  [00:45 — 01:15]   PARALLEL SUB-AGENTS — REAL EXAMPLE
+================================================================================
+
+[Screen: Agent run history. Find a run with 3-5 parallel sub-agents.]
+
+"Once the plan was approved, Antigravity dispatched specialized sub-agents
+in parallel. Here is one real run — five sub-agents working at the same time:
+one auditing the React Native UI for regressions, one researching dark-mode
+production patterns from Linear and Stripe, one hunting silent failures in
+the SSE stream, one checking Antigravity SDK 2026 rate-limit handling, and one
+investigating Vercel Edge timeout behavior.
+
+Each agent worked in isolation, returned a focused report, and the main
+thread integrated their findings into the actual file edits.
+
+That is the loop. Plan → parallel sub-agents → integrate → ship."
+
+[Action: click into one of the sub-agent reports. Show the findings table
+with severity tags and file:line references.]
+
+
+================================================================================
+  [01:15 — 01:45]   FILE EDITS WITH REVIEW — NOT BLACK-BOX
+================================================================================
+
+[Screen: Editor view, lib/antigravity.ts open with a recent diff visible]
+
+"This is the key difference. When Antigravity edits code, the diff is shown
+before it lands. I review every change.
+
+Here, for example, you can see where we added a fallback for the
+simulationResult — when the crisis_sim agent doesn't run because there
+are no active crises, the finally block synthesizes five stakeholder
+broadcasts from the headline severity instead of leaving the Civic Inbox
+empty.
+
+I caught that bug by reading this exact diff before approving it. That
+review step is what makes the IDE trustworthy for production code."
+
+[Action: scroll the file slowly so the diff highlight is on screen.
+Optional: hover the change to show the inline annotation.]
+
+
+================================================================================
+  [01:45 — 02:15]   THE BROWSER PREVIEW LOOP
+================================================================================
+
+[Screen: Switch to Antigravity's browser preview panel. App running.]
+
+"Antigravity ships a built-in browser preview, so the agent and I both see
+the app as we work. Here is the running DengueSat CIRO build.
+
+When we changed the home screen to show real bilingual cards instead of
+mock data, the agent could verify the change visually — the same way I do —
+and screenshot the result. That feedback loop turns a 'compiles' check into
+a 'looks right' check, without me having to alt-tab to a simulator."
+
+[Action: click around the home screen. Tap Execute. Let one analysis
+run for a few seconds to show traces filling.]
+
+
+================================================================================
+  [02:15 — 02:40]   THE META-LOOP — APP MIRRORS THE IDE
+================================================================================
+
+[Screen: Switch to the Logs tab in the running app. Show Antigravity
+trace stream filling in real time.]
+
+"And here is the philosophical loop that closes this submission.
+
+DengueSat CIRO itself emits an Antigravity-style trace stream. Every Antigravity
+agent inside our app — eight specialized sub-agents plus a master coordinator
+— annotates its work with the same schema you just saw the IDE use on us:
+phase, runId, stepIndex, latency, confidence, evidence quote count.
+
+The IDE we built with became the design pattern we shipped. We learned
+observability-first agentic operation from Antigravity, and we made it the
+core abstraction of our app."
+
+[Action: scroll the live trace list. Highlight one trace card. Open the
+JSON detail to show the _antigravity envelope.]
+
+
+================================================================================
+  [02:40 — 03:00]   CLOSE
+================================================================================
+
+[Screen: Side-by-side if possible — Antigravity workspace on left,
+running app on right. Else just the workspace home.]
+
+"DengueSat CIRO is a thirty-thousand-line, eight-agent, bilingual crisis
+response system, built end to end inside Google Antigravity, by one
+developer, in under a week, with every plan reviewed, every diff approved,
+every sub-agent run inspectable.
+
+This is what agentic development looks like when the human stays in the
+driver seat. Thank you."
+
+[Stop recording.]
+
+
+================================================================================
+  SHOT LIST  (use this as a checklist while recording)
+================================================================================
+
+  [ ] Antigravity workspace home with DengueSat CIRO repo visible
+  [ ] Plan-mode chat with a saved plan scrolled
+  [ ] Plan spec with Removed / Modified / Created sections highlighted
+  [ ] Agent run history showing 3–5 parallel sub-agents
+  [ ] Sub-agent report with severity table + file:line refs
+  [ ] File editor (lib/antigravity.ts) with a recent diff visible
+  [ ] Browser preview panel — home screen
+  [ ] Browser preview — tap Execute, brief wait
+  [ ] Running app — Logs tab — trace stream filling
+  [ ] JSON detail view of one trace showing _antigravity envelope
+  [ ] (Optional) Side-by-side workspace + app for closing line
+
+
+================================================================================
+  TIMING NOTES
+================================================================================
+
+  • Aim for 2:30 total. Buffer to 3:00 max.
+  • If a section runs long, cut the meta-loop (02:15 → 02:40) — it is the
+    most expendable.
+  • Do NOT speed up the agent run history. Judges want to see the parallel
+    dispatch. Let it breathe.
+  • If the live analysis hangs in the browser preview, cut to the trace
+    timeline replay instead — it shows the same thing without the wait.
+
+
+================================================================================
+  ONE-LINE TEASER (for thumbnail or submission card)
+================================================================================
+
+  "Eight Antigravity agents. One human. Built inside Google Antigravity.
+   From satellite signal to bilingual citizen action in under three minutes."
+
+
+================================================================================
+                                END OF SCRIPT
+================================================================================

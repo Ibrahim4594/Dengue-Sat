@@ -1,0 +1,18 @@
+{
+  "karachi": {
+    "temperature": 29.5,
+    "humidity": 68,
+    "precipitation": 12.5,
+    "ndvi": 0.45,
+    "ndwi": 0.35,
+    "last_updated": "2026-05-13T12:00:00Z"
+  },
+  "lahore": {
+    "temperature": 32.0,
+    "humidity": 75,
+    "precipitation": 85.0,
+    "ndvi": 0.65,
+    "ndwi": 0.55,
+    "last_updated": "2026-05-13T12:00:00Z"
+  }
+}
