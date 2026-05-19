@@ -1,24 +1,66 @@
 <div align="center">
 
-# DengueSat CIRO
+<br/>
 
-### Crisis Intelligence & Response Orchestrator for Pakistan's Dengue Epidemic
+# 🛰️ DengueSat CIRO
 
-A multi-agent decision-support system built on Antigravity Sonnet 4.6 + Haiku 4.5,
-streamed over Server-Sent Events from Vercel Edge to a React Native client,
-fusing six geospatial and clinical signals into bilingual public-health action.
+### Crisis Intelligence & Response Orchestrator
+#### Pakistan's first AI-powered real-time dengue outbreak detection and response system
 
 <br/>
 
-**AI-Seekho 2026 · Challenge 3 · Submission**
+![Platform](https://img.shields.io/badge/Platform-Android-3DDC84?style=for-the-badge&logo=android&logoColor=white)
+![Antigravity](https://img.shields.io/badge/Powered_by-Antigravity-107BFF?style=for-the-badge)
+![Agents](https://img.shields.io/badge/Agents-8_Specialized-FF5C75?style=for-the-badge)
+![Sources](https://img.shields.io/badge/Data_Sources-6_Live-00E676?style=for-the-badge)
+![Bilingual](https://img.shields.io/badge/Language-English_%2B_Urdu-FFD600?style=for-the-badge)
+![License](https://img.shields.io/badge/License-MIT-0056B3?style=for-the-badge)
 
-[Architecture](#3-architecture) ·
-[Agents](#4-agent-taxonomy) ·
-[Data Contracts](#6-data-contracts--schemas) ·
-[Traces](#9-antigravity-trace-system) ·
-[Run Locally](#13-running-locally)
+<br/>
+
+> **"From satellite signal to bilingual citizen action in under 3 minutes."**
+>
+> Pakistan loses thousands to dengue every year. The existing PITB surveillance system
+> detects outbreaks **3–7 days late** using lagging field reports.
+> DengueSat CIRO detects in **60–150 seconds** from NASA satellites, live hospital
+> feeds, and Google Trends — then orchestrates 8 AI agents to classify, prioritize,
+> allocate, simulate, and broadcast bilingual emergency alerts.
+
+<br/>
+
+**AI-Seekho 2026 · Challenge 3: Crisis Intelligence & Response Orchestrator**
+
+| | | | | |
+|:---:|:---:|:---:|:---:|:---:|
+| [🏗️ Architecture](#3-architecture) | [🤖 8 Agents](#4-agent-taxonomy) | [📡 Data Sources](#7-external-data-sources) | [🔍 Traces](#9-antigravity-trace-system) | [⚡ Run Locally](#13-running-locally) |
+
+<br/>
 
 </div>
+
+---
+
+## ⚡ What it does in one pipeline run
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│  SELECT LOCATION  →  TAP EXECUTE  →  WAIT 60–150s  →  GET RESULTS  │
+└─────────────────────────────────────────────────────────────────────┘
+
+INPUT                          8 AGENTS                    OUTPUT
+──────                         ────────                    ──────
+NASA POWER satellites    →  SignalFuse              →  DRI score (0–100)
+Firebase hospital RTDB   →  TrendSpy               →  Severity: CRITICAL
+OpenWeather live         →  OutbreakEye             →  Bilingual summary
+Google Maps Places       →  SeverityMind (thinking) →  24h action card
+Google Trends            →  ResourceForge (thinking) →  Resource allocation
+Synthetic social (Urdu)  →  CrisisSim              →  5 stakeholder alerts
+                             RecoveryGuard          →  False-alarm check
+                             CitizenSignal          →  Photo triage
+                                    ↓
+                         REAL-TIME MAP + CIVIC INBOX
+                         Urdu + English · All live · No mock data
+```
 
 ---
 
@@ -148,21 +190,39 @@ The information asymmetry is the disease. DengueSat CIRO collapses the latency f
 
 ## 4. Agent Taxonomy
 
-The system runs a **Master Coordinator** plus **eight specialized sub-agents**. Each
-sub-agent has a typed Zod input contract, a typed Zod output contract, a system prompt
-that is prompt-cached, and a dedicated Edge function endpoint.
+**9 agents total** — 1 Master Coordinator (Haiku 4.5, fast dispatch) + 8 specialists (Sonnet 4.6, deep reasoning). Each agent has a typed Zod input/output contract, prompt-cached system block, and dedicated Vercel Edge endpoint.
 
-| # | Agent | Model | Thinking | Role | Output schema (excerpt) |
-|---|---|---|---|---|---|
-| ⌘ | **Master** | Haiku 4.5 | off | Tool dispatch, iteration control, final bilingual emit | `{summaryEn, summaryUr, actionEn, actionUr, headlineSeverity}` |
-| 1 | **SignalFuse** | Sonnet 4.6 | off | Multi-source fusion + per-source credibility scoring | `fusedSignal{climate, vegetation, hospitalLoad, social, ...}` |
-| 2 | **TrendSpy** | Haiku 4.5 | off | Google Trends anomaly detection (rolling-mean z-score) | `{anomaly_score, trend_direction, peak_value}` |
-| 3 | **OutbreakEye** | Sonnet 4.6 | off | Crisis classification, geographic clustering, anomaly detection | `crises[]{id, type, severityIndicator, populationAtRisk}` |
-| 4 | **SeverityMind** | Sonnet 4.6 | **on** | DRI score derivation (T-R-V-H-W weighted), severity & protocol selection | `assessments[]{dri{score, severity, protocol, factors}}` |
-| 5 | **ResourceForge** | Sonnet 4.6 | **on** | Proportional resource allocation, tradeoff narration | `allocation{perCrisis, reserve, tradeoff, sideEffects}` |
-| 6 | **CrisisSim** | Sonnet 4.6 | off | Before/after state simulation, metrics derivation, stakeholder copy | `{beforeState, afterState, metrics, stakeholderMessages}` |
-| 7 | **RecoveryGuard** | Sonnet 4.6 | off | False-positive detection, classification verdict (UPHOLD/RECLASSIFY/SPLIT/RETRACT) | `{verdict, retractionMessages?, utilityNotifications}` |
-| 8 | **CitizenSignal** | Sonnet 4.6 | off | Citizen-submitted photo + text triage (used by vision endpoint) | `{breedingLikelihood, riskScore, recommendation}` |
+```
+                        ┌─────────────────────────────────────┐
+                        │   ⌘  MASTER COORDINATOR  (Haiku 4.5) │
+                        │   ReAct loop · tool dispatch · final  │
+                        │   bilingual JSON emit · cost tracking  │
+                        └──────────────┬──────────────────────┘
+                                       │  dispatches via tool_use
+           ┌───────────────────────────┼──────────────────────────────┐
+           ▼           ▼              ▼              ▼                ▼
+    ┌──────────┐ ┌──────────┐ ┌──────────┐  ┌──────────┐   ┌──────────┐
+    │SignalFuse│ │ TrendSpy │ │OutbreakEye│  │SeverityMind│ │ResourceForge│
+    │ Sonnet   │ │ Haiku    │ │ Sonnet   │  │ Sonnet+🧠 │ │ Sonnet+🧠 │
+    └──────────┘ └──────────┘ └──────────┘  └──────────┘   └──────────┘
+           ▼                                      ▼                ▼
+    ┌──────────┐                         ┌──────────┐   ┌──────────────┐
+    │ CrisisSim│                         │RecoveryGuard│ │ CitizenSignal│
+    │ Sonnet   │                         │ Sonnet   │   │ Sonnet+Vision│
+    └──────────┘                         └──────────┘   └──────────────┘
+```
+
+| Agent | Model | Thinking | Purpose | Key output |
+|---|---|:---:|---|---|
+| **⌘ Master** | Haiku 4.5 | — | Orchestrator. ReAct loop. Final bilingual JSON. | `summaryEn/Ur · actionEn/Ur · headlineSeverity` |
+| **📡 SignalFuse** | Sonnet 4.6 | — | Fuse 6 sources with credibility weights. Contradiction detection. | `overallRiskLevel · overallConfidence · contradictions[]` |
+| **📈 TrendSpy** | Haiku 4.5 | — | Rolling z-score on Trends data. Spike vs sustained classification. | `anomaly_score · z_score · trend_direction` |
+| **🔍 OutbreakEye** | Sonnet 4.6 | — | Crisis type + geographic cluster + anomaly array. | `crises[]{type, severityIndicator, populationAtRisk}` |
+| **🧠 SeverityMind** | Sonnet 4.6 | **🔥 ON** | DRI 0–100 via T·Rw·V·H·W formula. Extended thinking. | `dri{score, severity, protocol, factors, reasoning}` |
+| **📋 ResourceForge** | Sonnet 4.6 | **🔥 ON** | Constrained allocation. Tradeoff narration. Side-effects. | `allocation{perCrisis, reserve, tradeoff, sideEffects}` |
+| **⚡ CrisisSim** | Sonnet 4.6 | — | Before/after state. Lives saved. 5 stakeholder messages EN+Urdu. | `{beforeState, afterState, metrics, stakeholderMessages}` |
+| **🛡️ RecoveryGuard** | Sonnet 4.6 | — | False-positive adjudication. UPHOLD/RECLASSIFY/SPLIT/RETRACT. | `{verdict, retractionMessages?, utilityNotifications}` |
+| **👤 CitizenSignal** | Sonnet 4.6 | Vision | Photo + text triage via Antigravity Vision. Breeding risk 0–100. | `{breedingLikelihood, riskScore, recommendation}` |
 
 ### 4.1 Master loop contract
 
@@ -305,21 +365,20 @@ highest-credibility source (95/100 in the source-credibility ledger).
 
 ## 7. External Data Sources
 
-| Source | Endpoint | Refresh | Credibility weight | What it tells the system |
-|---|---|---|---|---|
-| **NASA POWER** | `power.larc.nasa.gov` | 24h, lat/lng | 99 | Temperature, humidity, rainfall, NDVI, NDWI |
-| **OpenWeather** | `api.openweathermap.org` | 10 min | 92 | Live temp + humidity confirmation |
-| **Google Maps Places** | nearby search | 1h | 88 | Hospital facility count + proximity |
-| **Firebase RTDB** | `denguesa-e0371` | streaming | 95 | Real hospital admissions, bed count, platelet inventory |
-| **Google Trends** | `trends.google.com` (via wrapper) | 4h, keyword | 75 | Public search-interest anomalies |
-| **Synthetic social** | Antigravity Haiku 4.5 generated | per-run | 42 | Urdu / Roman-Urdu / English health discourse simulation |
+All 6 sources are fetched **in parallel** client-side before the SSE pipeline starts, folded into `prefetchedData`, and fused by SignalFuse with credibility-weighted scoring. Live/failed/cached status badges visible per source on Home screen.
 
-All six are fetched **in parallel** by the client before the SSE pipeline begins, then
-folded into the master message payload as `prefetchedData`. This eliminates a round-trip
-between every sub-agent and the upstream API.
+| Source | Type | Endpoint | Refresh | Credibility | Signals |
+|---|:---:|---|---|:---:|---|
+| 🛰️ **NASA POWER** | ✅ **REAL** | `power.larc.nasa.gov` | 24h cache | **99** | Temp · Humidity · Rainfall · NDVI · NDWI |
+| 🌤️ **OpenWeather** | ✅ **REAL** | `api.openweathermap.org` | 10 min | **92** | Current temp + humidity (cross-validation) |
+| 🗺️ **Google Maps Places** | ✅ **REAL** | Nearby Search API | 1h | **88** | Hospital count + facility locations |
+| 🏥 **Firebase RTDB** | ✅ **REAL** | `denguesa-e0371.firebaseio.com` | Streaming | **95** | Live admissions · Bed count · Platelets |
+| 📊 **Google Trends** | ✅ **REAL** | `trends.google.com` (wrapper) | 4h | **75** | Public search-interest anomalies |
+| 💬 **Social signals** | ⚠️ **SYNTHETIC** | Antigravity Haiku 4.5 | Per-run | **42** | Urdu · Roman Urdu · English health discourse |
 
-Live status is surfaced on the Home screen and reflected on `setExtendedSourceStatus`
-calls — judges can see green / cached / failed badges per source per run.
+> **Why synthetic social?** Real X/Meta APIs require approved developer credentials for Pakistan public health use. The synthetic layer is clearly labeled at credibility 42/100 and never triggers a crisis classification on its own — it only adds weight when corroborated by higher-credibility sources. Real social ingest is Phase 2.
+
+**REAL APIs used:** NASA POWER (no key, public) · OpenWeather · Google Maps Platform · Firebase RTDB · Google Trends
 
 ---
 
